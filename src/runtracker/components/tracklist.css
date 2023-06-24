@@ -1,0 +1,17 @@
+body, .list-container{
+    background-color: #F1F3F5 !important;
+}
+.items-container{
+    overflow-x: none;
+    overflow-y: auto;
+    height: 90vh;
+    & .item{            
+        width: 95vw;
+        padding: 7px 15px;  
+        border-bottom: 1px solid #cacaca;      
+    }
+}
+
+.item-active{
+    background-color: aqua;
+}

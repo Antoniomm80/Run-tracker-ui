@@ -14,9 +14,11 @@
     "@mantine/core": "^6.0.14",
     "@mantine/dates": "^6.0.14",
     "@mantine/hooks": "^6.0.14",
+    "@tabler/icons-react": "^2.22.0",
     "dayjs": "^1.11.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-i18nify": "^6.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
