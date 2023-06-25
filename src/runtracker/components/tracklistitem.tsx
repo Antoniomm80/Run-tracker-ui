@@ -5,6 +5,7 @@ import timeUtils from "../utils/timeutils";
 import "./tracklist.css";
 import { IconArrowUpRight, IconArrowDownRight } from "@tabler/icons-react";
 import { useState } from "react";
+import { useRunTrackerStore } from "../../App";
 
 interface TimeRefDecoratorProps {
     track: TrackSummary;
@@ -36,7 +37,9 @@ interface TrackListItemProps {
     track:TrackSummary;
 }
 export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
-    const [active, setActive] = useState(false);
+    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);
+    const setSelectedTrack = useRunTrackerStore((state) => state.setSelectedTrack)
+    const active = track.id === selectedTrack;
     const prepareSecondaryText = (path: TrackSummary): string => {
         if (!path.durationBest || !path.trainingDateBest) {
             return `${path.distanceInKms()} kms`;
@@ -47,7 +50,7 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
     };
 
     return (
-        <Card withBorder key={track.id} mt={"xs"} onClick={() => setActive(!active)} sx={(theme) => ({ backgroundColor: active ? theme.colors.blue[2] : ''})}>
+        <Card withBorder key={track.id} mt={"xs"} onClick={() => setSelectedTrack(track.id||-1)} sx={(theme) => ({ backgroundColor: active ? theme.colors.blue[2] : ''})}>
             <Group position={"apart"}>
                 <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap" gap={"xs"}>
                     <Title order={5}>{track.name}</Title>
