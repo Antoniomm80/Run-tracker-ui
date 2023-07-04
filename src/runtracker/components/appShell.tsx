@@ -1,9 +1,23 @@
 import { useState } from "react";
-import { AppShell, Navbar, Header, Footer, Aside, Text, MediaQuery, Burger, useMantineTheme } from "@mantine/core";
+import {
+    AppShell,
+    Navbar,
+    Header,
+    Footer,
+    Aside,
+    Text,
+    MediaQuery,
+    Burger,
+    useMantineTheme,
+    Affix,
+    Button,
+    rem,
+} from "@mantine/core";
 import { TrackSummary } from "../domain/tracksummary";
 
 import { TrackPage } from "./trackpage";
 import { TrackList } from "./tracksList";
+import { IconArrowUp } from "@tabler/icons-react";
 
 export default function RunTrackerAppShell() {
     const theme = useMantineTheme();
@@ -89,7 +103,9 @@ export default function RunTrackerAppShell() {
         >
             <TrackPage track={track} bestTime={time} />
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                <TrackList tracks={tracks} />                
+                <>
+                    <TrackList tracks={tracks} />                    
+                </>
             </MediaQuery>
         </AppShell>
     );
