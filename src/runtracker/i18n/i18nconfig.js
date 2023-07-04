@@ -26,6 +26,7 @@ setTranslations({
             saveError: "Se ha producido un error al guardar la ruta"
         },
         newTime: {
+            title:"Nuevo registro de tiempo",
             trainingDate: "Fecha del entrenamiento",
             durationString: "Tiempo",
             saveSuccess: "El registro de tiempo se ha guardado correctamente",

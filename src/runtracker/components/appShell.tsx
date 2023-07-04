@@ -66,15 +66,14 @@ export default function RunTrackerAppShell() {
                 main: {
                     background: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
                 },
-            }}            
-               
+            }}
             navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      navbar={
-        <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <Text>Application navbar</Text>
-        </Navbar>
-      }
+            asideOffsetBreakpoint="sm"
+            navbar={
+                <Navbar p="md" hiddenBreakpoint="sm" width={{ md: 300, lg: 400 }} hidden={!opened}>
+                    <TrackList tracks={tracks} />
+                </Navbar>
+            }
             footer={
                 <Footer height={60} p="md">
                     Application footer
@@ -83,16 +82,15 @@ export default function RunTrackerAppShell() {
             header={
                 <Header height={{ base: 50, md: 70 }} p="md">
                     <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
-                        
-
                         <Text>Application header</Text>
                     </div>
                 </Header>
             }
         >
             <TrackPage track={track} bestTime={time} />
-            <TrackList tracks={tracks}/>
-            
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                <TrackList tracks={tracks} />                
+            </MediaQuery>
         </AppShell>
     );
 }
