@@ -1,11 +1,10 @@
-import { Card, Flex, Group, Title,Text, ThemeIcon } from "@mantine/core";
-import { TrackSummary, TrackSummaryProps } from "../domain/tracksummary";
-import { translate } from "react-i18nify";
+import {Card, Flex, Grid, Text, ThemeIcon, Title} from "@mantine/core";
+import {TrackSummary} from "../domain/tracksummary";
+import {translate} from "react-i18nify";
 import timeUtils from "../utils/timeutils";
 import "./tracklist.css";
-import { IconArrowUpRight, IconArrowDownRight } from "@tabler/icons-react";
-import { useState } from "react";
-import { useRunTrackerStore } from "../../App";
+import {IconArrowDownRight, IconArrowUpRight} from "@tabler/icons-react";
+import {useRunTrackerStore} from "../../App";
 
 interface TimeRefDecoratorProps {
     track: TrackSummary;
@@ -22,11 +21,11 @@ const TimeRefDecorator: React.FC<TimeRefDecoratorProps> = (props) => {
             <ThemeIcon
                 color="gray"
                 variant="light"
-                sx={(theme) => ({ color: diferencia < 0 ? theme.colors.teal[6] : theme.colors.red[6] })}
+                sx={(theme) => ({color: diferencia < 0 ? theme.colors.teal[6] : theme.colors.red[6]})}
                 size={38}
                 radius="md"
             >
-                <DiffIcon size="1.8rem" stroke={1.5} />
+                <DiffIcon size="1.8rem" stroke={1.5}/>
             </ThemeIcon>
             <Text>{`${diferencia > 0 ? "+" : ""}${diferencia}s`}</Text>
         </Flex>
@@ -34,8 +33,9 @@ const TimeRefDecorator: React.FC<TimeRefDecoratorProps> = (props) => {
 };
 
 interface TrackListItemProps {
-    track:TrackSummary;
+    track: TrackSummary;
 }
+
 export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
     const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);
     const setSelectedTrack = useRunTrackerStore((state) => state.setSelectedTrack)
@@ -50,14 +50,19 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
     };
 
     return (
-        <Card withBorder key={track.id} mt={"xs"} onClick={() => setSelectedTrack(track.id||-1)} sx={(theme) => ({ backgroundColor: active ? theme.colors.blue[2] : ''})}>
-            <Group position={"apart"}>
-                <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap" gap={"xs"}>
-                    <Title order={5}>{track.name}</Title>
-                    <Text c="dimmed">{prepareSecondaryText(track)}</Text>
-                </Flex>
-                <TimeRefDecorator track={track} />
-            </Group>
+        <Card withBorder key={track.id} mt={"xs"} onClick={() => setSelectedTrack(track.id || -1)}
+              sx={(theme) => ({backgroundColor: active ? theme.colors.blue[3] : ''})}>
+            <Grid gutter="0" justify="space-around">
+                <Grid.Col span="content">
+                    <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap" gap={"xs"}>
+                        <Title order={5}>{track.name}</Title>
+                        <Text c="dimmed">{prepareSecondaryText(track)}</Text>
+                    </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                    <TimeRefDecorator track={track}/>
+                </Grid.Col>
+            </Grid>
         </Card>
     );
 };

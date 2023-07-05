@@ -1,34 +1,27 @@
-import { ScrollArea, Container, Affix, Button, rem, MediaQuery } from "@mantine/core";
-import { TrackSummary } from "../domain/tracksummary";
-import { TrackListItem } from "./tracklistitem";
-import { IconArrowUp } from "@tabler/icons-react";
+import {Container} from "@mantine/core";
+import {TrackSummary} from "../domain/tracksummary";
+import {TrackListItem} from "./tracklistitem";
 
 interface TrackListProps {
     tracks: TrackSummary[];
+    navigation?: boolean;
 }
 
 export const TrackList: React.FC<TrackListProps> = (props) => {
-    return (
-        <ScrollArea h={200}>
+    if (!props.navigation) {
+        return (
             <Container fluid>
                 {props.tracks.map((track) => (
-                    <TrackListItem track={track} />
+                    <TrackListItem key={track.id} track={track} navigation={props.navigation}/>
                 ))}
             </Container>
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                <>
-                    <Affix position={{ bottom: rem(20), right: rem(20) }}>
-                        <Button
-                            leftIcon={<IconArrowUp size="1rem" />}
-                            onClick={() => {
-                                return null;
-                            }}
-                        >
-                            Perrete
-                        </Button>
-                    </Affix>
-                </>
-            </MediaQuery>
-        </ScrollArea>
+        );
+    }
+    return (
+        <>
+            {props.tracks.map((track) => (
+                <TrackListItem key={track.id} track={track} navigation={props.navigation}/>
+            ))}
+        </>
     );
 };

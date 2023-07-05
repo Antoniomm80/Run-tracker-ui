@@ -1,23 +1,11 @@
-import { useState } from "react";
-import {
-    AppShell,
-    Navbar,
-    Header,
-    Footer,
-    Aside,
-    Text,
-    MediaQuery,
-    Burger,
-    useMantineTheme,
-    Affix,
-    Button,
-    rem,
-} from "@mantine/core";
-import { TrackSummary } from "../domain/tracksummary";
+import {useState} from "react";
+import {ActionIcon, AppShell, Divider, Footer, Group, Header, MediaQuery, Navbar, ScrollArea, Text, useMantineTheme,} from "@mantine/core";
+import {TrackSummary} from "../domain/tracksummary";
 
-import { TrackPage } from "./trackpage";
-import { TrackList } from "./tracksList";
-import { IconArrowUp } from "@tabler/icons-react";
+import {TrackPage} from "./trackpage";
+import {TrackList} from "./tracksList";
+import {IconMoon, IconSquarePlus} from "@tabler/icons-react";
+
 
 export default function RunTrackerAppShell() {
     const theme = useMantineTheme();
@@ -27,11 +15,11 @@ export default function RunTrackerAppShell() {
         TrackSummary.ofProps({
             id: 1,
             name: "Track 1",
-            distance: 1000,
+            distance: 12800,
             description: "Track 1 description",
-            durationBest: 100,
+            durationBest: 5400,
             trainingDateBest: new Date(),
-            durationLatest: 199,
+            durationLatest: 5800,
             trainingDateLatest: new Date(),
         })
     );
@@ -40,11 +28,11 @@ export default function RunTrackerAppShell() {
         TrackSummary.ofProps({
             id: 2,
             name: "Track 2",
-            distance: 2000,
+            distance: 3400,
             description: "Track 2 description",
-            durationBest: 200,
+            durationBest: 5400,
             trainingDateBest: new Date(),
-            durationLatest: 2021,
+            durationLatest: 5800,
             trainingDateLatest: new Date(),
         })
     );
@@ -84,8 +72,17 @@ export default function RunTrackerAppShell() {
             navbarOffsetBreakpoint="sm"
             asideOffsetBreakpoint="sm"
             navbar={
-                <Navbar p="md" hiddenBreakpoint="sm" width={{ md: 300, lg: 400 }} hidden={!opened}>
-                    <TrackList tracks={tracks} />
+                <Navbar p="md" hiddenBreakpoint="sm" width={{md: 300, lg: 400}} hidden={!opened}>
+                    <Navbar.Section mt="xs">
+                        <Group spacing="xs" position="right">
+                            <ActionIcon color="blue" size="lg" variant="transparent"><IconSquarePlus size="1.625rem"/></ActionIcon>
+                            <ActionIcon color="blue" size="lg" variant="transparent"><IconMoon size="1.625rem"/></ActionIcon>
+                        </Group>
+                    </Navbar.Section>
+                    <Divider my="sm"/>
+                    <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
+                        <TrackList tracks={tracks} navigation/>
+                    </Navbar.Section>
                 </Navbar>
             }
             footer={
@@ -94,18 +91,22 @@ export default function RunTrackerAppShell() {
                 </Footer>
             }
             header={
-                <Header height={{ base: 50, md: 70 }} p="md">
-                    <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
+                <Header height={{base: 50, md: 70}} p="md">
+                    <div style={{display: "flex", alignItems: "center", height: "100%"}}>
                         <Text>Application header</Text>
                     </div>
                 </Header>
             }
         >
-            <TrackPage track={track} bestTime={time} />
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                <>
-                    <TrackList tracks={tracks} />                    
-                </>
+            <MediaQuery smallerThan="md" styles={{display: "none"}}>
+                <div>
+                    <TrackPage track={track} bestTime={time}/>
+                </div>
+            </MediaQuery>
+            <MediaQuery largerThan="sm" styles={{display: "none"}}>
+                <div>
+                    <TrackList tracks={tracks}/>
+                </div>
             </MediaQuery>
         </AppShell>
     );
