@@ -18,6 +18,7 @@ setTranslations({
             title: "Mejor tiempo"
         },
         newPath: {
+            title:"Nuevo recorrido de entrenamiento",
             name: "Nombre de la ruta",
             distance: "Distancia (en metros)",
             pathToMap: "URL del mapa",
