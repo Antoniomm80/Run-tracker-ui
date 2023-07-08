@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
     ActionIcon,
     AppShell,
@@ -17,71 +16,44 @@ import {
     Textarea,
     useMantineTheme,
 } from "@mantine/core";
-import { TrackSummary } from "../domain/tracksummary";
+
 
 import { TrackPage } from "./trackpage";
 import { TrackList } from "./tracksList";
 import { IconClock, IconMoon, IconSquarePlus } from "@tabler/icons-react";
 import { NewTrackFab } from "./newTrackFab";
-import { DateInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { translate } from "react-i18nify";
+import { useQuery } from "@tanstack/react-query";
+import { pathService } from "../domain/trackservice";
+import { TrackSummary } from "../domain/tracksummary";
 
 export default function RunTrackerAppShell() {
     const theme = useMantineTheme();
     const [opened, { open, close }] = useDisclosure(false);
 
-    const tracks: TrackSummary[] = [];
-    tracks.push(
-        TrackSummary.ofProps({
-            id: 1,
-            name: "Track 1",
-            distance: 12800,
-            description: "Track 1 description",
-            durationBest: 5400,
-            trainingDateBest: new Date(),
-            durationLatest: 5800,
-            trainingDateLatest: new Date(),
-        })
-    );
+    const { isLoading, data } = useQuery(["paths"], pathService.findAll);
 
-    tracks.push(
-        TrackSummary.ofProps({
-            id: 2,
-            name: "Track 2",
-            distance: 3400,
-            description: "Track 2 description",
-            durationBest: 5400,
-            trainingDateBest: new Date(),
-            durationLatest: 5800,
-            trainingDateLatest: new Date(),
-        })
-    );
-
-    tracks.push(
-        TrackSummary.ofProps({
-            id: 3,
-            name: "Track 3",
-            distance: 3000,
-            description: "Track 3 description",
-            durationBest: 300,
-            trainingDateBest: new Date(),
-            durationLatest: 199,
-            trainingDateLatest: new Date(),
-        })
-    );
-
+    
+    if (isLoading) {
+        return (
+            <div>
+                <span>Loading</span>
+            </div>
+        );
+    }
+    const tracks = data?.map(p => new TrackSummary(p)) || [];
+    const firstTrack = tracks[0];
     const track = {
-        id: 1,
-        name: "Costera norte - Odiseo",
-        description:
-            "Este es un viaje cruzando los himalayas, entre la india y nepal en busca de nuestra flor de loto. Este es un viaje cruzando los himalayas, entre la india y nepal en busca de nuestra flor de loto. Este es un viaje cruzando los himalayas, entre la india y nepal en busca de nuestra flor de loto. Este es un viaje cruzando los himalayas, entre la india y nepal en busca de nuestra flor de loto. Este es un viaje cruzando los himalayas, entre la india y nepal en busca de nuestra flor de loto. Este es un viaje cruzando los himalayas, entre la india y nepal en busca de nuestra flor de loto",
-        distance: 10000,
+        id: firstTrack.id,
+        name: firstTrack.name,
+        description: firstTrack.description,            
+        distance: firstTrack.distance
     };
 
     const time = {
-        duration: 5430,
-        trainingDate: new Date(),
+        duration: firstTrack.durationBest,
+        trainingDate: firstTrack.trainingDateBest,
     };
     return (
         <>
