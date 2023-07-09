@@ -11,16 +11,16 @@ export const TrackList: React.FC<TrackListProps> = (props) => {
     if (!props.navigation) {
         return (
             <Container fluid>
-                {props.tracks.map((track) => (
-                    <TrackListItem key={track.id} track={track} navigation={props.navigation}/>
+                {props.tracks.map((track,index) => (
+                    <TrackListItem key={`${index}-${track.id}`} track={track} navigation={props.navigation}/>
                 ))}
             </Container>
         );
     }
     return (
         <>
-            {props.tracks.map((track) => (
-                <TrackListItem key={track.id} track={track} navigation={props.navigation}/>
+            {props.tracks.map((track,index) => (
+                <TrackListItem key={`${index}-${track.id}`} track={track} navigation={props.navigation}/>
             ))}
         </>
     );

@@ -27,11 +27,15 @@ import { translate } from "react-i18nify";
 import { useQuery } from "@tanstack/react-query";
 import { pathService } from "../domain/trackservice";
 import { TrackSummary } from "../domain/tracksummary";
+import { useRunTrackerStore } from "../../App";
 
 export default function RunTrackerAppShell() {
     const theme = useMantineTheme();
     const [opened, { open, close }] = useDisclosure(false);
-
+    const setSelectedTrack = useRunTrackerStore((state) => state.setSelectedTrack);
+    const setTracksSummary = useRunTrackerStore((state) => state.setTracksSummary);
+    const getSelectedTrack = useRunTrackerStore((state) => state.getSelectedTrack);
+    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);
     const { isLoading, data } = useQuery(["paths"], pathService.findAll);
 
     
@@ -43,18 +47,8 @@ export default function RunTrackerAppShell() {
         );
     }
     const tracks = data?.map(p => new TrackSummary(p)) || [];
-    const firstTrack = tracks[0];
-    const track = {
-        id: firstTrack.id,
-        name: firstTrack.name,
-        description: firstTrack.description,            
-        distance: firstTrack.distance
-    };
-
-    const time = {
-        duration: firstTrack.durationBest,
-        trainingDate: firstTrack.trainingDateBest,
-    };
+    setTracksSummary(tracks);
+    
     return (
         <>
             <AppShell
@@ -98,7 +92,7 @@ export default function RunTrackerAppShell() {
             >
                 <MediaQuery smallerThan="md" styles={{ display: "none" }}>
                     <div>
-                        <TrackPage track={track} bestTime={time} />
+                        <TrackPage trackSummary={getSelectedTrack()} />
                     </div>
                 </MediaQuery>
                 <MediaQuery largerThan="sm" styles={{ display: "none" }}>

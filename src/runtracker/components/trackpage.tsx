@@ -6,18 +6,19 @@ import {useDisclosure} from "@mantine/hooks";
 import {IconClock} from "@tabler/icons-react";
 import {DateInput} from "@mantine/dates";
 import {translate} from "react-i18nify";
+import { TrackSummary } from "../domain/tracksummary";
 
 export interface TrackPageProps {
-    bestTime: TimeProps;
-    track: TrackProps;
+    trackSummary?: TrackSummary;
 }
 
 export function TrackPage(props: TrackPageProps) {
     const [opened, {open, close}] = useDisclosure(false);
+    if(props.trackSummary === undefined) return (<></>);
     return (
         <>
             <Container fluid>
-                <TrackCard bestTime={props.bestTime} track={props.track} open={open}/>
+                <TrackCard bestTime={props.trackSummary.bestTime} track={props.trackSummary} open={open}/>
             </Container>
             <Modal opened={opened} onClose={close} size="md" title={translate("newTime.title")} centered>
                 <DateInput placeholder={translate("newTime.trainingDate")} label={translate("newTime.trainingDate")} withAsterisk/>

@@ -1,4 +1,5 @@
 import { TimeProps } from "./time";
+import { TrackSummaryProps } from "./tracksummary";
 
 export interface TrackProps {
     id?: number;
@@ -57,6 +58,15 @@ export class Track implements TrackProps {
 
     static ofProps(path: TrackProps) {
         return new Track(path);
+    }
+
+    static fromSummary(summary: TrackSummaryProps) {
+        return new Track({
+            id: summary.id,
+            name: summary.name,
+            description: summary.description,
+            distance: summary.distance,
+        });
     }
 
     static empty(): Track {

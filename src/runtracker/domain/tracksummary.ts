@@ -1,3 +1,4 @@
+import { TimeProps } from "./time";
 
 export interface TrackSummaryProps{
     id?:number;
@@ -62,6 +63,13 @@ export class TrackSummary implements TrackSummaryProps{
 
     public get trainingDateLatest(){
         return this._trainingDateLatest;
+    }
+
+    public get bestTime():TimeProps{
+        return {
+            duration: this._durationBest,
+            trainingDate: this._trainingDateBest,
+        } 
     }
 
     static ofProps(path: PathSummaryProps) {
