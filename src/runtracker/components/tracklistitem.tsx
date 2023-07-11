@@ -5,6 +5,7 @@ import timeUtils from "../utils/timeutils";
 import "./tracklist.css";
 import {IconArrowDownRight, IconArrowUpRight, IconClock, IconTrophy, IconRun} from "@tabler/icons-react";
 import {useRunTrackerStore} from "../../App";
+import { useNavigate } from "react-router-dom";
 
 interface TimeRefDecoratorProps {
     track: TrackSummary;
@@ -37,8 +38,9 @@ interface TrackListItemProps {
 }
 
 export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
-    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);    
-    const setSelectedTrack = useRunTrackerStore((state) => state.setSelectedTrack);
+    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack); 
+    const navigate = useNavigate();   
+    const handleOnClick = () => navigate('/tracks/' + track.id);
     const active = track.id === selectedTrack;
     const prepareDistanceText= (path: TrackSummary): string => {
         return ` ${path.distanceInKms()} kms`;
@@ -58,10 +60,7 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
     };
 
     return (
-        <Card withBorder key={track.id} mt={"xs"} onClick={() => {            
-            setSelectedTrack(track.id || -1);
-            }
-            }
+        <Card withBorder key={track.id} mt={"xs"} onClick={handleOnClick}
               sx={(theme) => ({backgroundColor: active ? theme.colors.blue[3] : ''})}>
             <Grid gutter="0" justify="space-around">
                 <Grid.Col span={11}>

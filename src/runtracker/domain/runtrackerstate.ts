@@ -6,5 +6,7 @@ export interface RunTrackerState {
     selectedTrack?: number,
     setSelectedTrack: (trackId: number) => void,
     getSelectedTrack: () => TrackSummary | undefined,
-    clear: () => void
+    clear: () => void,
+    open: () => void,
+    setOpen: (open:()=>void) => void,    
   }

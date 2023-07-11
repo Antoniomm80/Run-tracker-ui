@@ -24,6 +24,8 @@ export const useRunTrackerStore = create<RunTrackerState>()((set,get) => ({
         return get().tracksSummary.find(t => t.id === get().selectedTrack)
     },
     clear: () => set((state:RunTrackerState) => ({ selectedTrack: undefined })),
+    open: () => {},
+    setOpen: (open:()=>void) => set((state:RunTrackerState) => ({ open: open })),   
 }));
 
 export default function App() {

@@ -13,10 +13,12 @@ export function NewTrackFab(props: NewTrackFabProps){
         "--main-fab-color": theme.colors.blue[6]
     };
     return (
-        <div className={`${props.className} fab-button`} style={styles as React.CSSProperties}>
-             <ActionIcon onClick={props.open}>
-                <IconPlus size="2rem" stroke={2} color="white"/>
-            </ActionIcon>
-        </div>
+        
+            <div className={`${props.className} fab-button`} style={styles as React.CSSProperties}>
+                <ActionIcon onClick={props.open}>
+                    <IconPlus size="2rem" stroke={2} color="white"/>
+                </ActionIcon>
+            </div>
+        
     );
 }

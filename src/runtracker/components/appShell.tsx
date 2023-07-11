@@ -17,7 +17,6 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 
-
 import { TrackPage } from "./trackpage";
 import { TrackList } from "./tracksList";
 import { IconClock, IconMoon, IconSquarePlus } from "@tabler/icons-react";
@@ -28,17 +27,16 @@ import { useQuery } from "@tanstack/react-query";
 import { pathService } from "../domain/trackservice";
 import { TrackSummary } from "../domain/tracksummary";
 import { useRunTrackerStore } from "../../App";
+import { Outlet } from "react-router-dom";
 
 export default function RunTrackerAppShell() {
     const theme = useMantineTheme();
     const [opened, { open, close }] = useDisclosure(false);
-    const setSelectedTrack = useRunTrackerStore((state) => state.setSelectedTrack);
     const setTracksSummary = useRunTrackerStore((state) => state.setTracksSummary);
-    const getSelectedTrack = useRunTrackerStore((state) => state.getSelectedTrack);
-    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);
+    const setOpen = useRunTrackerStore((state) => state.setOpen);
     const { isLoading, data } = useQuery(["paths"], pathService.findAll);
+    setOpen(open);
 
-    
     if (isLoading) {
         return (
             <div>
@@ -46,9 +44,9 @@ export default function RunTrackerAppShell() {
             </div>
         );
     }
-    const tracks = data?.map(p => new TrackSummary(p)) || [];
+    const tracks = data?.map((p) => new TrackSummary(p)) || [];
     setTracksSummary(tracks);
-    
+
     return (
         <>
             <AppShell
@@ -90,17 +88,9 @@ export default function RunTrackerAppShell() {
                     </Header>
                 }
             >
-                <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-                    <div>
-                        <TrackPage trackSummary={getSelectedTrack()} />
-                    </div>
-                </MediaQuery>
-                <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                    <div>
-                        <TrackList tracks={tracks} />
-                        <NewTrackFab open={open} />
-                    </div>
-                </MediaQuery>
+                <div id="detail">
+                    <Outlet />
+                </div>
             </AppShell>
             <Modal opened={opened} onClose={close} size="md" title={translate("newPath.title")} centered>
                 <TextInput label={translate("newPath.name")} withAsterisk />
