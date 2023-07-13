@@ -1,9 +1,22 @@
-import { Button, Container, Group, LoadingOverlay, Modal, Space, TextInput } from "@mantine/core";
+import {
+    Button,
+    Card,
+    Container,
+    Group,
+    LoadingOverlay,
+    MediaQuery,
+    Modal,
+    Paper,
+    Space,
+    Tabs,
+    TextInput,
+    createStyles,
+} from "@mantine/core";
 import { Time, TimeProps } from "../domain/time";
 import { Track, TrackProps } from "../domain/track";
 import { TrackCard } from "./trackcard";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCalendar, IconClock } from "@tabler/icons-react";
+import { IconCalendar, IconClock, IconMessageCircle, IconPhoto } from "@tabler/icons-react";
 import { DateInput } from "@mantine/dates";
 import { translate } from "react-i18nify";
 import { TrackSummary } from "../domain/tracksummary";
@@ -14,6 +27,8 @@ import { useParams } from "react-router-dom";
 import { useForm, Resolver } from "react-hook-form";
 import "./trackpage.css";
 import timeService from "../domain/timeservice";
+import { TrackList } from "./tracksList";
+import { TimeList } from "./timeList";
 
 type FormValues = {
     trainingDate: string;
@@ -31,15 +46,14 @@ export function TrackPage(props: TrackPageProps) {
     const { isLoading, data } = useQuery(["track", trackId], () => pathService.findById(trackId || ""));
 
     const queryclient = useQueryClient();
-    const {mutate} = useMutation((newTime: TimeProps) => timeService.createTime(trackId||"", newTime), {
+    const { mutate } = useMutation((newTime: TimeProps) => timeService.createTime(trackId || "", newTime), {
         onSuccess: (savedTime) => {
             const currentPath: Track = queryclient.getQueryData(["track", trackId]) as Track;
             currentPath.times?.push(Time.of(savedTime));
-            queryclient.setQueryData(["path", trackId], {...currentPath});
-            //toastContext.showSuccessMessage(translate("newTime.saveSuccess"));            
+            queryclient.setQueryData(["path", trackId], { ...currentPath });
+            //toastContext.showSuccessMessage(translate("newTime.saveSuccess"));
             hideOverlay();
             close();
-            
         },
         onError: () => {
             hideOverlay();
@@ -55,16 +69,26 @@ export function TrackPage(props: TrackPageProps) {
         setValue,
         trigger,
     } = useForm<FormValues>({ mode: "onBlur" });
-    
+    const useStyles = createStyles((theme) => ({
+        card: {
+            position: "relative",
+            overflow: "visible",
+            padding: theme.spacing.xl,
+        },
+    }));
+    const { classes } = useStyles();
+
     const calculateDuration = (duration: string): number => {
         var durationComponents = duration.split(":");
         return parseInt(durationComponents[0]) * 60 + parseInt(durationComponents[1]);
     };
 
-
-    const onSubmit = handleSubmit((form:FormValues) => {
+    const onSubmit = handleSubmit((form: FormValues) => {
         showOverlay();
-        const adaptedForm = {trainingDate:new Date(form.trainingDate), duration: calculateDuration(form.durationString)};
+        const adaptedForm = {
+            trainingDate: new Date(form.trainingDate),
+            duration: calculateDuration(form.durationString),
+        };
         mutate(adaptedForm);
     });
     const handleChange = (e: any) => {
@@ -82,6 +106,38 @@ export function TrackPage(props: TrackPageProps) {
             <Container fluid>
                 <TrackCard bestTime={props.trackSummary.bestTime} track={track} open={open} />
             </Container>
+            <Space h="lg" />
+            <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+                <Container fluid>
+                    <Paper radius="md" withBorder className={classes.card}>
+                        <TimeList times={track.times || []} distance={track.distance} />
+                    </Paper>
+                </Container>
+            </MediaQuery>
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                <Container fluid>
+                    <Paper radius="md" withBorder className={classes.card}>
+                        <Tabs defaultValue="times">
+                            <Tabs.List>
+                                <Tabs.Tab value="times" icon={<IconPhoto size="0.8rem" />}>
+                                    {translate("labels.times")}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="graph" icon={<IconMessageCircle size="0.8rem" />}>
+                                    {translate("labels.graph")}
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="times" pt="xs">
+                                <TimeList times={track.times || []} distance={track.distance} />
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="graph" pt="xs">
+                                Messages tab content
+                            </Tabs.Panel>
+                        </Tabs>
+                    </Paper>
+                </Container>
+            </MediaQuery>
             <Modal opened={opened} onClose={close} size="md" title={translate("newTime.title")} centered>
                 <form onSubmit={onSubmit}>
                     <LoadingOverlay visible={visible} overlayBlur={2} />
