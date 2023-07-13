@@ -27,7 +27,7 @@ export class Time implements TimeProps{
         return this._trainingDate;
     }
 
-    static of(time:TimeProps){
+    public static of(time:TimeProps){
         return new Time(time);
     }
 

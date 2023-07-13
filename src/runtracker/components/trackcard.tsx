@@ -55,7 +55,7 @@ export function TrackCard(props: TrackCardProps) {
         <Paper radius="md" withBorder className={classes.card} mt={`calc(${ICON_SIZE} / 3)`}>
             <div className="map-wrapper">
             <div className="map-container">
-                <iframe src={props.track.pathToMap} width="100%" height="300px" title="map" frameBorder="0"/>
+                {props.track.pathToMap !== undefined && <iframe src={props.track.pathToMap} width="100%" height="300px" title="map" frameBorder="0"/>}
             </div>
             </div>
             <ThemeIcon className={classes.icon} size={ICON_SIZE} radius={ICON_SIZE}>
