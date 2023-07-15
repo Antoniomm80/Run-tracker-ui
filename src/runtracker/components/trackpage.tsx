@@ -29,6 +29,7 @@ import "./trackpage.css";
 import timeService from "../domain/timeservice";
 import { TrackList } from "./tracksList";
 import { TimeList } from "./timeList";
+import TrackTimesGraph from "./tracktimesgraph";
 
 type FormValues = {
     trainingDate: string;
@@ -112,6 +113,10 @@ export function TrackPage(props: TrackPageProps) {
                     <Paper radius="md" withBorder className={classes.card}>
                         <TimeList times={track.times || []} distance={track.distance} />
                     </Paper>
+                    <Space h="lg" />
+                    <Paper radius="md" withBorder className={classes.card}>
+                        <TrackTimesGraph times={track.times || []} />
+                    </Paper>
                 </Container>
             </MediaQuery>
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
@@ -132,7 +137,7 @@ export function TrackPage(props: TrackPageProps) {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="graph" pt="xs">
-                                Messages tab content
+                                <TrackTimesGraph times={track.times || []} />
                             </Tabs.Panel>
                         </Tabs>
                     </Paper>

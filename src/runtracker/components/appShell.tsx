@@ -1,8 +1,10 @@
 import {
     ActionIcon,
     AppShell,
+    Badge,
     Button,
     Divider,
+    Flex,
     Footer,
     Group,
     Header,
@@ -14,12 +16,13 @@ import {
     Text,
     TextInput,
     Textarea,
+    useMantineColorScheme,
     useMantineTheme,
 } from "@mantine/core";
 
 import { TrackPage } from "./trackpage";
 import { TrackList } from "./tracksList";
-import { IconClock, IconMoon, IconSquarePlus } from "@tabler/icons-react";
+import { IconCaretLeft, IconChevronLeft, IconClock, IconMoon, IconMoonStars, IconPlus, IconSquarePlus, IconSun } from "@tabler/icons-react";
 import { NewTrackFab } from "./newTrackFab";
 import { useDisclosure } from "@mantine/hooks";
 import { translate } from "react-i18nify";
@@ -27,14 +30,18 @@ import { useQuery } from "@tanstack/react-query";
 import { pathService } from "../domain/trackservice";
 import { TrackSummary } from "../domain/tracksummary";
 import { useRunTrackerStore } from "../../App";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function RunTrackerAppShell() {
+    const navigate = useNavigate();
+    const handleOnClick = () => navigate("");
     const theme = useMantineTheme();
     const [opened, { open, close }] = useDisclosure(false);
     const setTracksSummary = useRunTrackerStore((state) => state.setTracksSummary);
     const setOpen = useRunTrackerStore((state) => state.setOpen);
     const { isLoading, data } = useQuery(["paths"], pathService.findAll);
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const dark = colorScheme === "dark";
     setOpen(open);
 
     if (isLoading) {
@@ -46,6 +53,12 @@ export default function RunTrackerAppShell() {
     }
     const tracks = data?.map((p) => new TrackSummary(p)) || [];
     setTracksSummary(tracks);
+
+    const leftPlus = (
+        <ActionIcon size="xs" color="blue" radius="xl" variant="transparent">
+            <IconPlus color="white" />
+        </ActionIcon>
+    );
 
     return (
         <>
@@ -60,13 +73,10 @@ export default function RunTrackerAppShell() {
                 navbar={
                     <Navbar p="md" hiddenBreakpoint="sm" width={{ md: 300, lg: 400 }} hidden={true}>
                         <Navbar.Section mt="xs">
-                            <Group spacing="xs" position="right">
-                                <ActionIcon color="blue" size="lg" variant="transparent" onClick={open}>
-                                    <IconSquarePlus size="1.625rem" />
-                                </ActionIcon>
-                                <ActionIcon color="blue" size="lg" variant="transparent">
-                                    <IconMoon size="1.625rem" />
-                                </ActionIcon>
+                            <Group spacing="xs" position="center">
+                                <Badge variant="filled" onClick={open} size="lg" leftSection={leftPlus}>
+                                    {translate("newPath.action")}
+                                </Badge>
                             </Group>
                         </Navbar.Section>
                         <Divider my="sm" />
@@ -82,9 +92,20 @@ export default function RunTrackerAppShell() {
                 }
                 header={
                     <Header height={{ base: 50, md: 70 }} p="md">
-                        <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
+                        <Flex gap="md" justify="space-between" align="center" direction="row" wrap="nowrap">
+                            <ActionIcon color="blue" size="lg" variant="transparent" onClick={handleOnClick}>
+                                <IconChevronLeft size="1.1rem" />
+                            </ActionIcon>
                             <Text>Application header</Text>
-                        </div>
+                            <ActionIcon
+                                variant="outline"
+                                color={dark ? "yellow" : "blue"}
+                                onClick={() => toggleColorScheme()}
+                                title="Toggle color scheme"
+                            >
+                                {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
+                            </ActionIcon>
+                        </Flex>
                     </Header>
                 }
             >
