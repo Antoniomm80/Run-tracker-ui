@@ -31,7 +31,7 @@ import { TrackList } from "./tracksList";
 import { TimeList } from "./timeList";
 import TrackTimesGraph from "./tracktimesgraph";
 
-type FormValues = {
+type NewTimeFormValues = {
     trainingDate: string;
     durationString: string;
 };
@@ -69,7 +69,7 @@ export function TrackPage(props: TrackPageProps) {
         handleSubmit,
         setValue,
         trigger,
-    } = useForm<FormValues>({ mode: "onBlur" });
+    } = useForm<NewTimeFormValues>({ mode: "onBlur" });
     const useStyles = createStyles((theme) => ({
         card: {
             position: "relative",
@@ -84,7 +84,7 @@ export function TrackPage(props: TrackPageProps) {
         return parseInt(durationComponents[0]) * 60 + parseInt(durationComponents[1]);
     };
 
-    const onSubmit = handleSubmit((form: FormValues) => {
+    const onSubmit = handleSubmit((form: NewTimeFormValues) => {
         showOverlay();
         const adaptedForm = {
             trainingDate: new Date(form.trainingDate),

@@ -35,7 +35,7 @@ export default function App() {
 
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-            <MantineProvider withGlobalStyles withNormalizeCSS>
+            <MantineProvider theme={{colorScheme}} withGlobalStyles withNormalizeCSS>
                 <QueryClientProvider client={queryClient}>
                     <RunTrackerAppShell />
                     <ReactQueryDevtools initialIsOpen={false} />

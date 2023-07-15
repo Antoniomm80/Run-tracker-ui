@@ -8,6 +8,7 @@ import {
     Footer,
     Group,
     Header,
+    LoadingOverlay,
     MediaQuery,
     Modal,
     Navbar,
@@ -22,17 +23,59 @@ import {
 
 import { TrackPage } from "./trackpage";
 import { TrackList } from "./tracksList";
-import { IconCaretLeft, IconChevronLeft, IconClock, IconMoon, IconMoonStars, IconPlus, IconSquarePlus, IconSun } from "@tabler/icons-react";
+import {
+    IconCaretLeft,
+    IconChevronLeft,
+    IconClock,
+    IconMoon,
+    IconMoonStars,
+    IconPlus,
+    IconSquarePlus,
+    IconSun,
+} from "@tabler/icons-react";
 import { NewTrackFab } from "./newTrackFab";
 import { useDisclosure } from "@mantine/hooks";
 import { translate } from "react-i18nify";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pathService } from "../domain/trackservice";
 import { TrackSummary } from "../domain/tracksummary";
 import { useRunTrackerStore } from "../../App";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Track, TrackProps } from "../domain/track";
+import { APP_PATH } from "../../config";
+
+type NewTrackFormValues = {
+    name: string;
+    description: string;
+    pathToMap?: string;
+    distance: number;
+};
 
 export default function RunTrackerAppShell() {
+    const queryclient = useQueryClient();
+    const { mutate } = useMutation((newPath: TrackProps) => pathService.createPath(newPath), {
+        onSuccess: (savedPath: TrackProps) => {
+            const paths: TrackProps[] = queryclient.getQueryData(["tracks"]) as TrackProps[];
+            paths?.push(savedPath);
+            queryclient.setQueryData(["tracks"], [...paths]);
+            hideOverlay();
+            close();
+        },
+        onError: () => {
+            hideOverlay();
+            //toastContext.showErrorMessage(translate("newTime.saveError"));
+        },
+    });
+
+    const {
+        register,
+        formState: { errors, isDirty, isValid },
+        handleSubmit,
+        setValue,
+        trigger,
+    } = useForm<NewTrackFormValues>({ mode: "onBlur" });
+    const [visible, { open: showOverlay, close: hideOverlay }] = useDisclosure(false);
     const navigate = useNavigate();
     const handleOnClick = () => navigate("");
     const theme = useMantineTheme();
@@ -43,6 +86,16 @@ export default function RunTrackerAppShell() {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === "dark";
     setOpen(open);
+
+    const onSubmit = handleSubmit((form: NewTrackFormValues) => {
+        showOverlay();
+        mutate(Track.ofProps(form));
+    });
+    const handleChange = (e: any) => {
+        e.persist();
+        setValue(e.target.name, e.target.value);
+        trigger(e.target.name);
+    };
 
     if (isLoading) {
         return (
@@ -114,17 +167,55 @@ export default function RunTrackerAppShell() {
                 </div>
             </AppShell>
             <Modal opened={opened} onClose={close} size="md" title={translate("newPath.title")} centered>
-                <TextInput label={translate("newPath.name")} withAsterisk />
-                <Space h="sm" />
-                <TextInput label={translate("newPath.distance")} withAsterisk />
-                <Space h="sm" />
-                <TextInput label={translate("newPath.pathToMap")} withAsterisk />
-                <Space h="sm" />
-                <Textarea label={translate("newPath.description")} />
-                <Space h="lg" />
-                <Group position="right">
-                    <Button>{translate("actions.save")}</Button>
-                </Group>
+                <LoadingOverlay visible={visible} overlayBlur={2} />
+                <form onSubmit={onSubmit}>
+                    <TextInput
+                        label={translate("newPath.name")}
+                        {...register("name", { required: true, onBlur: handleChange })}
+                        aria-invalid={errors.name ? "true" : "false"}
+                        withAsterisk
+                    />
+                    {errors.name?.type === "required" && (
+                        <small className="form-error" role="alert">
+                            {translate("validation.mandatory")}
+                        </small>
+                    )}
+                    <Space h="sm" />
+                    <TextInput
+                        label={translate("newPath.distance")}
+                        {...register("distance", { required: true, onBlur: handleChange })}
+                        aria-invalid={errors.distance ? "true" : "false"}
+                        withAsterisk
+                    />
+                    {errors.distance?.type === "required" && (
+                        <small className="form-error" role="alert">
+                            {translate("validation.mandatory")}
+                        </small>
+                    )}
+                    <Space h="sm" />
+                    <TextInput
+                        label={translate("newPath.pathToMap")}                        
+                        {...register("pathToMap", { onBlur: handleChange })}
+                    />
+                    <Space h="sm" />
+                    <Textarea
+                        label={translate("newPath.description")}
+                        withAsterisk
+                        {...register("description", { required: true, onBlur: handleChange })}
+                        aria-invalid={errors.description ? "true" : "false"}
+                    />
+                    {errors.description?.type === "required" && (
+                        <small className="form-error" role="alert">
+                            {translate("validation.mandatory")}
+                        </small>
+                    )}
+                    <Space h="lg" />
+                    <Group position="right">
+                        <Button disabled={!isDirty || !isValid} type="submit">
+                            {translate("actions.save")}
+                        </Button>
+                    </Group>
+                </form>
             </Modal>
         </>
     );
