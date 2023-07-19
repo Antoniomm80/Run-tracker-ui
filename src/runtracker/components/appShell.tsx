@@ -25,11 +25,13 @@ import { TrackPage } from "./trackpage";
 import { TrackList } from "./tracksList";
 import {
     IconCaretLeft,
+    IconChartBar,
     IconChevronLeft,
     IconClock,
     IconMoon,
     IconMoonStars,
     IconPlus,
+    IconRun,
     IconSquarePlus,
     IconSun,
 } from "@tabler/icons-react";
@@ -44,6 +46,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Track, TrackProps } from "../domain/track";
 import { APP_PATH } from "../../config";
+import { FooterBar } from "./footerbar";
 
 type NewTrackFormValues = {
     name: string;
@@ -139,8 +142,8 @@ export default function RunTrackerAppShell() {
                     </Navbar>
                 }
                 footer={
-                    <Footer height={60} p="md">
-                        Application footer
+                    <Footer height={60} >
+                        <FooterBar/>
                     </Footer>
                 }
                 header={

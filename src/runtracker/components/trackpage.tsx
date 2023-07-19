@@ -16,7 +16,7 @@ import { Time, TimeProps } from "../domain/time";
 import { Track, TrackProps } from "../domain/track";
 import { TrackCard } from "./trackcard";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCalendar, IconClock, IconMessageCircle, IconPhoto } from "@tabler/icons-react";
+import { IconCalendar, IconCircle0Filled, IconClock, IconMessageCircle, IconPhoto, IconX } from "@tabler/icons-react";
 import { DateInput } from "@mantine/dates";
 import { translate } from "react-i18nify";
 import { TrackSummary } from "../domain/tracksummary";
@@ -30,6 +30,7 @@ import timeService from "../domain/timeservice";
 import { TrackList } from "./tracksList";
 import { TimeList } from "./timeList";
 import TrackTimesGraph from "./tracktimesgraph";
+import { notifications } from "@mantine/notifications";
 
 type NewTimeFormValues = {
     trainingDate: string;
@@ -53,12 +54,31 @@ export function TrackPage(props: TrackPageProps) {
             currentPath.times?.push(Time.of(savedTime));
             queryclient.setQueryData(["path", trackId], { ...currentPath });
             //toastContext.showSuccessMessage(translate("newTime.saveSuccess"));
+            notifications.show({                
+                withCloseButton: true,                
+                autoClose: 5000,
+                title: translate("application.title"),
+                message: translate("newTime.saveSuccess"),
+                color: 'green',
+                icon: <IconCircle0Filled />,                
+                
+                loading: false,
+              });
             hideOverlay();
             close();
         },
         onError: () => {
             hideOverlay();
-            //toastContext.showErrorMessage(translate("newTime.saveError"));
+            notifications.show({                
+                withCloseButton: true,                
+                autoClose: 5000,
+                title: translate("application.title"),
+                message: translate("newTime.saveError"),
+                color: 'red',
+                icon: <IconX />,                
+                
+                loading: false,
+              });
             close();
         },
     });

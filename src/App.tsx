@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TrackSummary } from "./runtracker/domain/tracksummary";
 import { RunTrackerState } from "./runtracker/domain/runtrackerstate";
 import { useState } from "react";
+import { Notifications } from "@mantine/notifications";
 
 export const useRunTrackerStore = create<RunTrackerState>()((set, get) => ({
     tracksSummary: [],
@@ -35,7 +36,8 @@ export default function App() {
 
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-            <MantineProvider theme={{colorScheme}} withGlobalStyles withNormalizeCSS>
+            <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+                <Notifications />
                 <QueryClientProvider client={queryClient}>
                     <RunTrackerAppShell />
                     <ReactQueryDevtools initialIsOpen={false} />
