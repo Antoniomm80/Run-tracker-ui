@@ -7,6 +7,7 @@ import ErrorPage from './runtracker/components/errorpage.tsx';
 import { TrackListPage } from './runtracker/components/tracklistpage.tsx';
 import { TrackPageLoader } from './runtracker/components/trackpageloader.tsx';
 import TrackStatsGraphContainer from './runtracker/components/trackstatspathcontainer.tsx';
+import { MainSection } from './runtracker/components/mainsection.tsx';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <TrackListPage />,
+        element: <MainSection/>,
       },
       {
         path: "tracks/:trackId",

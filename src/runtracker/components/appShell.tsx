@@ -21,7 +21,7 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 
-import { TrackPage } from "./trackpage";
+import { HeaderBar } from "./headerbar";
 import { TrackList } from "./tracksList";
 import {
     IconCaretLeft,
@@ -47,6 +47,7 @@ import { useForm } from "react-hook-form";
 import { Track, TrackProps } from "../domain/track";
 import { APP_PATH } from "../../config";
 import { FooterBar } from "./footerbar";
+
 
 type NewTrackFormValues = {
     name: string;
@@ -78,16 +79,13 @@ export default function RunTrackerAppShell() {
         setValue,
         trigger,
     } = useForm<NewTrackFormValues>({ mode: "onBlur" });
-    const [visible, { open: showOverlay, close: hideOverlay }] = useDisclosure(false);
-    const navigate = useNavigate();
-    const handleOnClick = () => navigate("");
+    const [visible, { open: showOverlay, close: hideOverlay }] = useDisclosure(false);    
     const theme = useMantineTheme();
     const [opened, { open, close }] = useDisclosure(false);
     const setTracksSummary = useRunTrackerStore((state) => state.setTracksSummary);
     const setOpen = useRunTrackerStore((state) => state.setOpen);
     const { isLoading, data } = useQuery(["paths"], pathService.findAll);
-    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-    const dark = colorScheme === "dark";
+    
     setOpen(open);
 
     const onSubmit = handleSubmit((form: NewTrackFormValues) => {
@@ -148,20 +146,7 @@ export default function RunTrackerAppShell() {
                 }
                 header={
                     <Header height={{ base: 50, md: 70 }} p="md">
-                        <Flex gap="md" justify="space-between" align="center" direction="row" wrap="nowrap">
-                            <ActionIcon color="blue" size="lg" variant="transparent" onClick={handleOnClick}>
-                                <IconChevronLeft size="1.1rem" />
-                            </ActionIcon>
-                            <Text>Application header</Text>
-                            <ActionIcon
-                                variant="outline"
-                                color={dark ? "yellow" : "blue"}
-                                onClick={() => toggleColorScheme()}
-                                title="Toggle color scheme"
-                            >
-                                {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-                            </ActionIcon>
-                        </Flex>
+                        <HeaderBar/>
                     </Header>
                 }
             >
