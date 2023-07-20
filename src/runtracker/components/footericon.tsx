@@ -1,5 +1,5 @@
-import { ActionIcon } from "@mantine/core";
-import { IconChartBar, IconRun } from "@tabler/icons-react";
+import {ActionIcon} from "@mantine/core";
+import {IconChartBar, IconRun} from "@tabler/icons-react";
 
 type FooterIconProps = {
     onClick: () => void;
@@ -7,11 +7,11 @@ type FooterIconProps = {
     type: "run" | "chart";
 }
 
-export function FooterIcon(props:FooterIconProps) {
+export function FooterIcon(props: FooterIconProps) {
     return (
         <ActionIcon color="blue" size="xl" variant={props.variant} onClick={props.onClick}>
-            {props.type === "run" && <IconRun size="2rem" />}
-            {props.type === "chart" && <IconChartBar size="2rem" />}
+            {props.type === "run" && <IconRun size="2rem" stroke="1.5"/>}
+            {props.type === "chart" && <IconChartBar size="2rem" stroke="1.5"/>}
         </ActionIcon>
     );
 }

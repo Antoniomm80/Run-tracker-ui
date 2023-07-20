@@ -1,11 +1,10 @@
-import {Card, Flex, Grid, Space, Text, ThemeIcon, Title} from "@mantine/core";
+import {Card, Flex, Grid, Space, Text, ThemeIcon, Title, useMantineTheme} from "@mantine/core";
 import {TrackSummary} from "../domain/tracksummary";
-import {translate} from "react-i18nify";
 import timeUtils from "../utils/timeutils";
 import "./tracklist.css";
-import {IconArrowDownRight, IconArrowUpRight, IconClock, IconTrophy, IconRun} from "@tabler/icons-react";
+import {IconArrowDownRight, IconArrowUpRight, IconCalendar, IconRun, IconTrophy} from "@tabler/icons-react";
 import {useRunTrackerStore} from "../../App";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 interface TimeRefDecoratorProps {
     track: TrackSummary;
@@ -38,11 +37,12 @@ interface TrackListItemProps {
 }
 
 export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
-    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack); 
-    const navigate = useNavigate();   
+    const theme = useMantineTheme();
+    const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);
+    const navigate = useNavigate();
     const handleOnClick = () => navigate('/tracks/' + track.id);
     const active = track.id === selectedTrack;
-    const prepareDistanceText= (path: TrackSummary): string => {
+    const prepareDistanceText = (path: TrackSummary): string => {
         return ` ${path.distanceInKms()} kms`;
     }
     const prepareTimeText = (path: TrackSummary): string => {
@@ -61,19 +61,22 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
 
     return (
         <Card withBorder key={track.id} mt={"xs"} onClick={handleOnClick}
-              sx={(theme) => ({backgroundColor: active ? theme.colors.blue[3] : ''})}>
+              sx={(theme) => ({backgroundColor: active ? theme.colors.blue[5] : ''})}>
             <Grid gutter="0" justify="space-around">
                 <Grid.Col span={11}>
-                    <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap" gap={"xs"} rowGap="xs">
-                        <Title order={6}>{track.name}</Title>                        
-                        <Text c="dimmed">
-                            <IconRun size="1.25rem" stroke={1.4}/>
+                    <Title order={active ? 5 : 6}>{track.name}</Title>
+                    <Space h={"xs"}/>
+                    <Flex justify="flex-start" align="center" direction="row" wrap="wrap" gap={"xs"} rowGap="xs">
+                        <IconRun size="1.4rem" stroke={1.4} color={active ? theme.colors.gray[0] : theme.colors.orange[7]}/>
+                        <Text c={active ? "gray.0" : "dimmed"}>
                             {prepareDistanceText(track)}
                         </Text>
-                        <Text c="dimmed">
-                            <IconTrophy size="1.25rem" stroke={1.4}/>
+                        <IconTrophy size="1.4rem" stroke={1.4} color={active ? theme.colors.gray[0] : theme.colors.yellow[4]}/>
+                        <Text c={active ? "gray.0" : "dimmed"}>
                             {prepareTimeText(track)}
-                            <IconClock size="1.25rem" stroke={1.4}/>
+                        </Text>
+                        <IconCalendar size="1.4rem" stroke={1.4} color={active ? theme.colors.gray[0] : theme.colors.red[9]}/>
+                        <Text c={active ? "gray.0" : "dimmed"}>
                             {prepareDateText(track)}
                         </Text>
                     </Flex>

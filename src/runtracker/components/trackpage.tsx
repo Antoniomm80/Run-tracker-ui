@@ -1,36 +1,21 @@
-import {
-    Button,
-    Card,
-    Container,
-    Group,
-    LoadingOverlay,
-    MediaQuery,
-    Modal,
-    Paper,
-    Space,
-    Tabs,
-    TextInput,
-    createStyles,
-} from "@mantine/core";
-import { Time, TimeProps } from "../domain/time";
-import { Track, TrackProps } from "../domain/track";
-import { TrackCard } from "./trackcard";
-import { useDisclosure } from "@mantine/hooks";
-import { IconCalendar, IconCircle0Filled, IconClock, IconMessageCircle, IconPhoto, IconX } from "@tabler/icons-react";
-import { DateInput } from "@mantine/dates";
-import { translate } from "react-i18nify";
-import { TrackSummary } from "../domain/tracksummary";
-import { pathService } from "../domain/trackservice";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import {Button, Container, createStyles, Group, LoadingOverlay, MediaQuery, Modal, Paper, Space, Tabs, TextInput,} from "@mantine/core";
+import {Time, TimeProps} from "../domain/time";
+import {Track, TrackProps} from "../domain/track";
+import {TrackCard} from "./trackcard";
+import {useDisclosure} from "@mantine/hooks";
+import {IconCalendar, IconCircle0Filled, IconClock, IconMessageCircle, IconPhoto, IconX} from "@tabler/icons-react";
+import {translate} from "react-i18nify";
+import {TrackSummary} from "../domain/tracksummary";
+import {pathService} from "../domain/trackservice";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useParams} from "react-router-dom";
 
-import { useForm, Resolver } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import "./trackpage.css";
 import timeService from "../domain/timeservice";
-import { TrackList } from "./tracksList";
-import { TimeList } from "./timeList";
+import {TimeList} from "./timeList";
 import TrackTimesGraph from "./tracktimesgraph";
-import { notifications } from "@mantine/notifications";
+import {notifications} from "@mantine/notifications";
 
 type NewTimeFormValues = {
     trainingDate: string;
@@ -42,54 +27,54 @@ export interface TrackPageProps {
 }
 
 export function TrackPage(props: TrackPageProps) {
-    const [opened, { open, close }] = useDisclosure(false);
-    const [visible, { open: showOverlay, close: hideOverlay }] = useDisclosure(false);
-    let { trackId } = useParams();
-    const { isLoading, data } = useQuery(["track", trackId], () => pathService.findById(trackId || ""));
+    const [opened, {open, close}] = useDisclosure(false);
+    const [visible, {open: showOverlay, close: hideOverlay}] = useDisclosure(false);
+    let {trackId} = useParams();
+    const {isLoading, data} = useQuery(["track", trackId], () => pathService.findById(trackId || ""));
 
     const queryclient = useQueryClient();
-    const { mutate } = useMutation((newTime: TimeProps) => timeService.createTime(trackId || "", newTime), {
+    const {mutate} = useMutation((newTime: TimeProps) => timeService.createTime(trackId || "", newTime), {
         onSuccess: (savedTime) => {
             const currentPath: Track = queryclient.getQueryData(["track", trackId]) as Track;
             currentPath.times?.push(Time.of(savedTime));
-            queryclient.setQueryData(["path", trackId], { ...currentPath });
+            queryclient.setQueryData(["path", trackId], {...currentPath});
             //toastContext.showSuccessMessage(translate("newTime.saveSuccess"));
-            notifications.show({                
-                withCloseButton: true,                
+            notifications.show({
+                withCloseButton: true,
                 autoClose: 5000,
                 title: translate("application.title"),
                 message: translate("newTime.saveSuccess"),
                 color: 'green',
-                icon: <IconCircle0Filled />,                
-                
+                icon: <IconCircle0Filled/>,
+
                 loading: false,
-              });
+            });
             hideOverlay();
             close();
         },
         onError: () => {
             hideOverlay();
-            notifications.show({                
-                withCloseButton: true,                
+            notifications.show({
+                withCloseButton: true,
                 autoClose: 5000,
                 title: translate("application.title"),
                 message: translate("newTime.saveError"),
                 color: 'red',
-                icon: <IconX />,                
-                
+                icon: <IconX/>,
+
                 loading: false,
-              });
+            });
             close();
         },
     });
 
     const {
         register,
-        formState: { errors, isDirty, isValid },
+        formState: {errors, isDirty, isValid},
         handleSubmit,
         setValue,
         trigger,
-    } = useForm<NewTimeFormValues>({ mode: "onBlur" });
+    } = useForm<NewTimeFormValues>({mode: "onBlur"});
     const useStyles = createStyles((theme) => ({
         card: {
             position: "relative",
@@ -97,7 +82,7 @@ export function TrackPage(props: TrackPageProps) {
             padding: theme.spacing.xl,
         },
     }));
-    const { classes } = useStyles();
+    const {classes} = useStyles();
 
     const calculateDuration = (duration: string): number => {
         var durationComponents = duration.split(":");
@@ -125,39 +110,39 @@ export function TrackPage(props: TrackPageProps) {
     return (
         <>
             <Container fluid>
-                <TrackCard bestTime={props.trackSummary.bestTime} track={track} open={open} />
+                <TrackCard bestTime={props.trackSummary.bestTime} track={track} open={open}/>
             </Container>
-            <Space h="lg" />
-            <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+            <Space h="lg"/>
+            <MediaQuery smallerThan="md" styles={{display: "none"}}>
                 <Container fluid>
                     <Paper radius="md" withBorder className={classes.card}>
-                        <TimeList times={track.times || []} distance={track.distance} />
+                        <TimeList times={track.times || []} distance={track.distance}/>
                     </Paper>
-                    <Space h="lg" />
+                    <Space h="lg"/>
                     <Paper radius="md" withBorder className={classes.card}>
-                        <TrackTimesGraph times={track.times || []} />
+                        <TrackTimesGraph times={track.times || []}/>
                     </Paper>
                 </Container>
             </MediaQuery>
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            <MediaQuery largerThan="sm" styles={{display: "none"}}>
                 <Container fluid>
                     <Paper radius="md" withBorder className={classes.card}>
                         <Tabs defaultValue="times">
                             <Tabs.List>
-                                <Tabs.Tab value="times" icon={<IconPhoto size="0.8rem" />}>
+                                <Tabs.Tab value="times" icon={<IconPhoto size="1.1rem"/>}>
                                     {translate("labels.times")}
                                 </Tabs.Tab>
-                                <Tabs.Tab value="graph" icon={<IconMessageCircle size="0.8rem" />}>
+                                <Tabs.Tab value="graph" icon={<IconMessageCircle size="1.1rem"/>}>
                                     {translate("labels.graph")}
                                 </Tabs.Tab>
                             </Tabs.List>
 
                             <Tabs.Panel value="times" pt="xs">
-                                <TimeList times={track.times || []} distance={track.distance} />
+                                <TimeList times={track.times || []} distance={track.distance}/>
                             </Tabs.Panel>
 
                             <Tabs.Panel value="graph" pt="xs">
-                                <TrackTimesGraph times={track.times || []} />
+                                <TrackTimesGraph times={track.times || []}/>
                             </Tabs.Panel>
                         </Tabs>
                     </Paper>
@@ -165,13 +150,13 @@ export function TrackPage(props: TrackPageProps) {
             </MediaQuery>
             <Modal opened={opened} onClose={close} size="md" title={translate("newTime.title")} centered>
                 <form onSubmit={onSubmit}>
-                    <LoadingOverlay visible={visible} overlayBlur={2} />
+                    <LoadingOverlay visible={visible} overlayBlur={2}/>
                     <TextInput
                         label={translate("newTime.trainingDate")}
                         placeholder="mm:ss"
-                        icon={<IconCalendar size="0.8rem" />}
+                        icon={<IconCalendar size="0.8rem"/>}
                         type="date"
-                        {...register("trainingDate", { required: true, onBlur: handleChange })}
+                        {...register("trainingDate", {required: true, onBlur: handleChange})}
                         aria-invalid={errors.trainingDate ? "true" : "false"}
                         withAsterisk
                     />
@@ -181,11 +166,11 @@ export function TrackPage(props: TrackPageProps) {
                         </small>
                     )}
 
-                    <Space h="sm" />
+                    <Space h="sm"/>
                     <TextInput
                         label={translate("newTime.durationString")}
                         placeholder="mm:ss"
-                        icon={<IconClock size="0.8rem" />}
+                        icon={<IconClock size="0.8rem"/>}
                         {...register("durationString", {
                             required: true,
                             pattern: /^[0-5]?\d:[0-5]\d$/i,
@@ -204,7 +189,7 @@ export function TrackPage(props: TrackPageProps) {
                             {translate("validation.timeFormat")}
                         </small>
                     )}
-                    <Space h="lg" />
+                    <Space h="lg"/>
                     <Group position="right">
                         <Button type="submit" disabled={!isDirty || !isValid}>
                             {translate("actions.save")}
