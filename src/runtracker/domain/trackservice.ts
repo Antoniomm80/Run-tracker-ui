@@ -9,7 +9,7 @@ export const pathService = {
 
     async findAll(): Promise<TrackSummaryProps[]> {
         try {
-            const result = await axios.get<TrackSummaryProps[]>(`${SERVER_URL}/run-tracker/api/v1/paths`);
+            const result = await axios.get<TrackSummaryProps[]>(`${SERVER_URL}/path-stats`);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
@@ -24,7 +24,7 @@ export const pathService = {
 
     async findById(pathId: string): Promise<TrackProps> {
         try {
-            const result = await axios.get<TrackProps>(`${SERVER_URL}/run-tracker/api/v1/paths/${pathId}`);
+            const result = await axios.get<TrackProps>(`${SERVER_URL}/paths/${pathId}`);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
@@ -39,7 +39,7 @@ export const pathService = {
 
     async createPath(path: TrackProps): Promise<TrackProps> {
         try {
-            const result = await axios.post<TrackProps>(`${SERVER_URL}/run-tracker/api/v1/paths`, path);
+            const result = await axios.post<TrackProps>(`${SERVER_URL}/paths`, path);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
