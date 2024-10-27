@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: runtracker-app
-          path: build/ # Specify the build directory path
+          path: dist/ # Specify the build directory path
