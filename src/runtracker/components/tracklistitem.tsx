@@ -46,17 +46,17 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
         return ` ${path.distanceInKms()} kms`;
     }
     const prepareTimeText = (path: TrackSummary): string => {
-        if (!path.durationBest) {
+        if (!path.overallBest) {
             return "";
         }
-        return ` ${timeUtils.printTime(path.durationBest)}`;
+        return ` ${timeUtils.printTime(path.overallBest)}`;
     };
 
     const prepareDateText = (path: TrackSummary): string => {
-        if (!path.trainingDateBest) {
+        if (!path.overallBestDate) {
             return "";
         }
-        return ` ${timeUtils.formatDate(path.trainingDateBest)}`;
+        return ` ${timeUtils.formatDate(path.overallBestDate)}`;
     };
 
     return (
@@ -64,7 +64,7 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
               sx={(theme) => ({backgroundColor: active ? theme.colors.blue[5] : ''})}>
             <Grid gutter="0" justify="space-around">
                 <Grid.Col span={11}>
-                    <Title order={active ? 5 : 6}>{track.name}</Title>
+                    <Title order={active ? 5 : 6}>{track.pathName}</Title>
                     <Space h={"xs"}/>
                     <Flex justify="flex-start" align="center" direction="row" wrap="wrap" gap={"xs"} rowGap="xs">
                         <IconRun size="1.4rem" stroke={1.4} color={active ? theme.colors.gray[0] : theme.colors.orange[7]}/>

@@ -1,82 +1,97 @@
-import { TimeProps } from "./time";
+import {TimeProps} from "./time.ts";
 
-export interface TrackSummaryProps{
-    id?:number;
-    name:string;
-    description:string;
-    distance:number;
-    durationBest:number;
-    trainingDateBest:Date;
-    durationLatest:number;
-    trainingDateLatest:Date;
-    distanceInKms?:() => Number;
+export interface TrackSummaryProps {
+    id: string;
+    pathId: number;
+    pathName: string;
+    pathDistance: number;
+    overallAverage: number;
+    monthAverage: number;
+    overallBest: number;
+    monthBest: number;
+    overallBestDate: Date;
+    monthBestDate: Date;
+    latestToBestTimespan: number;
 }
 
-export class TrackSummary implements TrackSummaryProps{
-    private _id?:number;
-    private _name:string;
-    private _description:string;
-    private _distance:number;
-    private _durationBest:number;
-    private _trainingDateBest:Date;
-    private _durationLatest:number;
-    private _trainingDateLatest:Date;
+export class TrackSummary implements TrackSummaryProps {
+    private _id: string;
+    private _pathId: number;
+    private _pathName: string;
+    private _pathDistance: number;
+    private _overallAverage: number;
+    private _monthAverage: number;
+    private _overallBest: number;
+    private _monthBest: number;
+    private _overallBestDate: Date;
+    private _monthBestDate: Date;
+    private _latestToBestTimespan: number;
+
 
     constructor(path: TrackSummaryProps) {
         this._id = path.id;
-        this._name = path.name;
-        this._description = path.description;
-        this._distance = path.distance;
-        this._durationBest = path.durationBest;
-        this._trainingDateBest = path.trainingDateBest;
-        this._durationLatest = path.durationLatest;
-        this._trainingDateLatest = path.trainingDateLatest;
+        this._pathId = path.pathId;
+        this._pathName = path.pathName;
+        this._pathDistance = path.pathDistance;
+        this._overallAverage = path.overallAverage;
+        this._monthAverage = path.monthAverage;
+        this._overallBest = path.overallBest;
+        this._monthBest = path.monthBest;
+        this._overallBestDate = path.overallBestDate;
+        this._monthBestDate = path.monthBestDate;
+        this._latestToBestTimespan = path.latestToBestTimespan;
     }
 
-    public get id(){
+    public get id() {
         return this._id;
     }
 
-    public get name(){
-        return this._name;
+    public get pathId() {
+        return this._pathId;
     }
 
-    public get description(){
-        return this._description;
+    public get pathName() {
+        return this._pathName;
     }
 
-    public get distance(){
-        return this._distance;
+    public get pathDistance() {
+        return this._pathDistance;
     }
 
-    public get durationBest(){
-        return this._durationBest;
+    public get overallAverage() {
+        return this._overallAverage;
     }
 
-    public get trainingDateBest(){
-        return this._trainingDateBest;
+    public get monthAverage() {
+        return this._monthAverage;
     }
 
-    public get durationLatest(){
-        return this._durationLatest;
+    public get overallBest() {
+        return this._overallBest;
     }
 
-    public get trainingDateLatest(){
-        return this._trainingDateLatest;
+    public get monthBest() {
+        return this._monthBest;
     }
 
-    public get bestTime():TimeProps{
-        return {
-            duration: this._durationBest,
-            trainingDate: this._trainingDateBest,
-        } 
+    public get overallBestDate() {
+        return this._overallBestDate;
     }
 
-    static ofProps(path: PathSummaryProps) {
-        return new TrackSummary(path);
+    public get monthBestDate() {
+        return this._monthBestDate;
     }
 
-    distanceInKms():Number{
-        return this.distance / 1000;
+    public get latestToBestTimespan() {
+        return this._latestToBestTimespan;
+    }
+
+
+    distanceInKms(): number {
+        return this._pathDistance / 1000;
+    }
+
+    public get time(): TimeProps {
+        return {duration: this._overallBest, trainingDate: this._overallBestDate};
     }
 }
