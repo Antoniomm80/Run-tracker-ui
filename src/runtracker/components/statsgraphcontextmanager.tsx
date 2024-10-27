@@ -1,12 +1,11 @@
-import React, {PropsWithChildren, useState} from "react";
+import React, {useState} from "react";
 import {StatsGraphContextImpl} from "./statsgraphcontext";
 
-export interface StatsGraphContextManagerProps extends PropsWithChildren<any> {
-}
 
 export const StatsGraphContext = React.createContext(null as any as StatsGraphContextImpl);
 
-const StatsGraphContextManager: React.FC = (props) => {
+
+const StatsGraphContextManager: React.FC<React.PropsWithChildren> = (props) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const context = new StatsGraphContextImpl(currentDate, setCurrentDate);
 

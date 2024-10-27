@@ -1,10 +1,9 @@
-import {IconButton} from "@material-ui/core";
 import {useContext} from "react";
 import {StatsGraphContextContent} from "./statsgraphcontext";
 import {StatsGraphContext} from "./statsgraphcontextmanager";
 
-import { ActionIcon } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import {ActionIcon} from "@mantine/core";
+import {IconChevronLeft, IconChevronRight} from "@tabler/icons-react";
 import "./monthselector.css";
 
 const MonthSelector: React.FC = () => {

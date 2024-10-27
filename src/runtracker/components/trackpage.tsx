@@ -29,7 +29,7 @@ export interface TrackPageProps {
 export function TrackPage(props: TrackPageProps) {
     const [opened, {open, close}] = useDisclosure(false);
     const [visible, {open: showOverlay, close: hideOverlay}] = useDisclosure(false);
-    let {trackId} = useParams();
+    const {trackId} = useParams();
     const {isLoading, data} = useQuery(["track", trackId], () => pathService.findById(trackId || ""));
 
     const queryclient = useQueryClient();
@@ -85,7 +85,7 @@ export function TrackPage(props: TrackPageProps) {
     const {classes} = useStyles();
 
     const calculateDuration = (duration: string): number => {
-        var durationComponents = duration.split(":");
+        const durationComponents = duration.split(":");
         return parseInt(durationComponents[0]) * 60 + parseInt(durationComponents[1]);
     };
 
@@ -107,6 +107,7 @@ export function TrackPage(props: TrackPageProps) {
         return <></>;
     }
     const track = new Track(data as TrackProps);
+
     return (
         <>
             <Container fluid>

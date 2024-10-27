@@ -11,10 +11,10 @@ interface TimeRefDecoratorProps {
 }
 
 const TimeRefDecorator: React.FC<TimeRefDecoratorProps> = (props) => {
-    if (!props.track.durationLatest || !props.track.durationBest) {
+    if (!props.track.latestToBestTimespan) {
         return <></>;
     }
-    const diferencia = props.track.durationLatest - props.track.durationBest;
+    const diferencia = props.track.latestToBestTimespan;
     const DiffIcon = diferencia < 0 ? IconArrowUpRight : IconArrowDownRight;
     return (
         <Flex justify="flex-start" align="flex-start" direction="column" wrap="wrap" gap={'xs'}>
@@ -34,6 +34,7 @@ const TimeRefDecorator: React.FC<TimeRefDecoratorProps> = (props) => {
 
 interface TrackListItemProps {
     track: TrackSummary;
+    navigation: boolean | undefined;
 }
 
 export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {

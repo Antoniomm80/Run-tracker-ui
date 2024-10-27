@@ -3,6 +3,7 @@ import React from 'react';
 
 import {CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Title, Tooltip,} from 'chart.js';
 import {Line} from 'react-chartjs-2';
+import {TimeProps} from "../domain/time";
 
 type TrackTimesGraphProps = {
     times: TimeProps[];

@@ -1,5 +1,4 @@
-import { TimeProps } from "./time";
-import { TrackSummaryProps } from "./tracksummary";
+import {TimeProps} from "./time";
 
 export interface TrackProps {
     id?: number;
@@ -8,7 +7,7 @@ export interface TrackProps {
     distance: number;
     pathToMap?: string;
     times?: TimeProps[];
-    distanceInKms?: () => Number;
+
 }
 
 export class Track implements TrackProps {
@@ -52,7 +51,7 @@ export class Track implements TrackProps {
         return this._times;
     }
 
-    distanceInKms(): Number {
+    distanceInKms(): number {
         return this.distance / 1000;
     }
 
@@ -60,16 +59,8 @@ export class Track implements TrackProps {
         return new Track(path);
     }
 
-    static fromSummary(summary: TrackSummaryProps) {
-        return new Track({
-            id: summary.id,
-            name: summary.name,
-            description: summary.description,
-            distance: summary.distance,
-        });
-    }
 
     static empty(): Track {
-        return new Track({ name: "", description: "", distance: 0 });
+        return new Track({name: "", description: "", distance: 0});
     }
 }

@@ -1,7 +1,7 @@
 import {TimeProps} from "./time.ts";
 
 export interface TrackSummaryProps {
-    id: string;
+    id: number;
     pathId: number;
     pathName: string;
     pathDistance: number;
@@ -15,7 +15,7 @@ export interface TrackSummaryProps {
 }
 
 export class TrackSummary implements TrackSummaryProps {
-    private _id: string;
+    private _id: number;
     private _pathId: number;
     private _pathName: string;
     private _pathDistance: number;

@@ -1,10 +1,9 @@
-
-import { useQuery } from "@tanstack/react-query";
-import {ReactNode, useContext} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {useContext} from "react";
 import timeService from "../domain/timeservice";
 import MonthSelector from "./monthselector";
-import { StatsGraphContextContent } from "./statsgraphcontext";
-import { StatsGraphContext } from "./statsgraphcontextmanager";
+import {StatsGraphContextContent} from "./statsgraphcontext";
+import {StatsGraphContext} from "./statsgraphcontextmanager";
 import BarGraph from "./bargraph";
 
 
@@ -16,7 +15,7 @@ const TrackStatsGraph: React.FC = () => {
         data
     } = useQuery(["stats", statsGraphContext.getMonth(), statsGraphContext.getYear()], () => timeService.getMonthStats(statsGraphContext.getMonth(), statsGraphContext.getYear()));
 
-        
+
     if (isLoading) {
         return (
             <div className="path-list">

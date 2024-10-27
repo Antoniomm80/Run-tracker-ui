@@ -4,49 +4,32 @@ import {
     Badge,
     Button,
     Divider,
-    Flex,
     Footer,
     Group,
     Header,
     LoadingOverlay,
-    MediaQuery,
     Modal,
     Navbar,
     ScrollArea,
     Space,
-    Text,
-    TextInput,
     Textarea,
-    useMantineColorScheme,
+    TextInput,
     useMantineTheme,
 } from "@mantine/core";
 
-import { HeaderBar } from "./headerbar";
-import { TrackList } from "./tracksList";
-import {
-    IconCaretLeft,
-    IconChartBar,
-    IconChevronLeft,
-    IconClock,
-    IconMoon,
-    IconMoonStars,
-    IconPlus,
-    IconRun,
-    IconSquarePlus,
-    IconSun,
-} from "@tabler/icons-react";
-import { NewTrackFab } from "./newTrackFab";
-import { useDisclosure } from "@mantine/hooks";
-import { translate } from "react-i18nify";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { pathService } from "../domain/trackservice";
-import { TrackSummary } from "../domain/tracksummary";
-import { useRunTrackerStore } from "../../App";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { Track, TrackProps } from "../domain/track";
-import { APP_PATH } from "../../config";
-import { FooterBar } from "./footerbar";
+import {HeaderBar} from "./headerbar";
+import {TrackList} from "./tracksList";
+import {IconPlus,} from "@tabler/icons-react";
+import {useDisclosure} from "@mantine/hooks";
+import {translate} from "react-i18nify";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {pathService} from "../domain/trackservice";
+import {TrackSummary} from "../domain/tracksummary";
+import {useRunTrackerStore} from "../../App";
+import {Outlet} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {Track, TrackProps} from "../domain/track";
+import {FooterBar} from "./footerbar";
 
 
 type NewTrackFormValues = {
@@ -58,7 +41,7 @@ type NewTrackFormValues = {
 
 export default function RunTrackerAppShell() {
     const queryclient = useQueryClient();
-    const { mutate } = useMutation((newPath: TrackProps) => pathService.createPath(newPath), {
+    const {mutate} = useMutation((newPath: TrackProps) => pathService.createPath(newPath), {
         onSuccess: (savedPath: TrackProps) => {
             const paths: TrackProps[] = queryclient.getQueryData(["tracks"]) as TrackProps[];
             paths?.push(savedPath);
@@ -74,18 +57,18 @@ export default function RunTrackerAppShell() {
 
     const {
         register,
-        formState: { errors, isDirty, isValid },
+        formState: {errors, isDirty, isValid},
         handleSubmit,
         setValue,
         trigger,
-    } = useForm<NewTrackFormValues>({ mode: "onBlur" });
-    const [visible, { open: showOverlay, close: hideOverlay }] = useDisclosure(false);    
+    } = useForm<NewTrackFormValues>({mode: "onBlur"});
+    const [visible, {open: showOverlay, close: hideOverlay}] = useDisclosure(false);
     const theme = useMantineTheme();
-    const [opened, { open, close }] = useDisclosure(false);
+    const [opened, {open, close}] = useDisclosure(false);
     const setTracksSummary = useRunTrackerStore((state) => state.setTracksSummary);
     const setOpen = useRunTrackerStore((state) => state.setOpen);
-    const { isLoading, data } = useQuery(["paths"], pathService.findAll);
-    
+    const {isLoading, data} = useQuery(["paths"], pathService.findAll);
+
     setOpen(open);
 
     const onSubmit = handleSubmit((form: NewTrackFormValues) => {
@@ -110,7 +93,7 @@ export default function RunTrackerAppShell() {
 
     const leftPlus = (
         <ActionIcon size="xs" color="blue" radius="xl" variant="transparent">
-            <IconPlus color="white" />
+            <IconPlus color="white"/>
         </ActionIcon>
     );
 
@@ -125,7 +108,7 @@ export default function RunTrackerAppShell() {
                 navbarOffsetBreakpoint="sm"
                 asideOffsetBreakpoint="sm"
                 navbar={
-                    <Navbar p="md" hiddenBreakpoint="sm" width={{ md: 300, lg: 400 }} hidden={true}>
+                    <Navbar p="md" hiddenBreakpoint="sm" width={{md: 300, lg: 400}} hidden={true}>
                         <Navbar.Section mt="xs">
                             <Group spacing="xs" position="center">
                                 <Badge variant="filled" onClick={open} size="lg" leftSection={leftPlus}>
@@ -133,33 +116,33 @@ export default function RunTrackerAppShell() {
                                 </Badge>
                             </Group>
                         </Navbar.Section>
-                        <Divider my="sm" />
+                        <Divider my="sm"/>
                         <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
-                            <TrackList tracks={tracks} navigation />
+                            <TrackList tracks={tracks} navigation/>
                         </Navbar.Section>
                     </Navbar>
                 }
                 footer={
-                    <Footer height={60} >
+                    <Footer height={60}>
                         <FooterBar/>
                     </Footer>
                 }
                 header={
-                    <Header height={{ base: 50, md: 70 }} p="md">
+                    <Header height={{base: 50, md: 70}} p="md">
                         <HeaderBar/>
                     </Header>
                 }
             >
                 <div id="detail">
-                    <Outlet />
+                    <Outlet/>
                 </div>
             </AppShell>
             <Modal opened={opened} onClose={close} size="md" title={translate("newPath.title")} centered>
-                <LoadingOverlay visible={visible} overlayBlur={2} />
+                <LoadingOverlay visible={visible} overlayBlur={2}/>
                 <form onSubmit={onSubmit}>
                     <TextInput
                         label={translate("newPath.name")}
-                        {...register("name", { required: true, onBlur: handleChange })}
+                        {...register("name", {required: true, onBlur: handleChange})}
                         aria-invalid={errors.name ? "true" : "false"}
                         withAsterisk
                     />
@@ -168,10 +151,10 @@ export default function RunTrackerAppShell() {
                             {translate("validation.mandatory")}
                         </small>
                     )}
-                    <Space h="sm" />
+                    <Space h="sm"/>
                     <TextInput
                         label={translate("newPath.distance")}
-                        {...register("distance", { required: true, onBlur: handleChange })}
+                        {...register("distance", {required: true, onBlur: handleChange})}
                         aria-invalid={errors.distance ? "true" : "false"}
                         withAsterisk
                     />
@@ -180,16 +163,16 @@ export default function RunTrackerAppShell() {
                             {translate("validation.mandatory")}
                         </small>
                     )}
-                    <Space h="sm" />
+                    <Space h="sm"/>
                     <TextInput
-                        label={translate("newPath.pathToMap")}                        
-                        {...register("pathToMap", { onBlur: handleChange })}
+                        label={translate("newPath.pathToMap")}
+                        {...register("pathToMap", {onBlur: handleChange})}
                     />
-                    <Space h="sm" />
+                    <Space h="sm"/>
                     <Textarea
                         label={translate("newPath.description")}
                         withAsterisk
-                        {...register("description", { required: true, onBlur: handleChange })}
+                        {...register("description", {required: true, onBlur: handleChange})}
                         aria-invalid={errors.description ? "true" : "false"}
                     />
                     {errors.description?.type === "required" && (
@@ -197,7 +180,7 @@ export default function RunTrackerAppShell() {
                             {translate("validation.mandatory")}
                         </small>
                     )}
-                    <Space h="lg" />
+                    <Space h="lg"/>
                     <Group position="right">
                         <Button disabled={!isDirty || !isValid} type="submit">
                             {translate("actions.save")}
