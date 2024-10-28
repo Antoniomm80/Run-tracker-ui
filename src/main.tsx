@@ -28,7 +28,9 @@ const router = createBrowserRouter([
             },
         ],
     },
-]);
+], {
+    basename: "/runtracker-app/",
+});
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
