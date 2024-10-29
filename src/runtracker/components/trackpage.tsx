@@ -111,7 +111,7 @@ export function TrackPage(props: TrackPageProps) {
     return (
         <>
             <Container fluid>
-                <TrackCard bestTime={props.trackSummary?.time} track={track} open={open}/>
+                <TrackCard bestTime={props.trackSummary?.bestTime} track={track} open={open}/>
             </Container>
             <Space h="lg"/>
             <MediaQuery smallerThan="md" styles={{display: "none"}}>

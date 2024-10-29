@@ -1,44 +1,37 @@
-import {TimeProps} from "./time.ts";
+import {TimeProps} from "./time";
 
 export interface TrackSummaryProps {
-    id: number;
-    pathId: number;
-    pathName: string;
-    pathDistance: number;
-    overallAverage: number;
-    monthAverage: number;
-    overallBest: number;
-    monthBest: number;
-    overallBestDate: Date;
-    monthBestDate: Date;
+    id?: number;
+    name: string;
+    description: string;
+    distance: number;
+    durationBest: number;
+    trainingDateBest: Date;
+    durationLatest: number;
+    trainingDateLatest: Date;
     latestToBestTimespan: number;
 }
 
 export class TrackSummary implements TrackSummaryProps {
-    private _id: number;
-    private _pathId: number;
-    private _pathName: string;
-    private _pathDistance: number;
-    private _overallAverage: number;
-    private _monthAverage: number;
-    private _overallBest: number;
-    private _monthBest: number;
-    private _overallBestDate: Date;
-    private _monthBestDate: Date;
+    private _id?: number;
+    private _name: string;
+    private _description: string;
+    private _distance: number;
+    private _durationBest: number;
+    private _trainingDateBest: Date;
+    private _durationLatest: number;
+    private _trainingDateLatest: Date;
     private _latestToBestTimespan: number;
-
 
     constructor(path: TrackSummaryProps) {
         this._id = path.id;
-        this._pathId = path.pathId;
-        this._pathName = path.pathName;
-        this._pathDistance = path.pathDistance;
-        this._overallAverage = path.overallAverage;
-        this._monthAverage = path.monthAverage;
-        this._overallBest = path.overallBest;
-        this._monthBest = path.monthBest;
-        this._overallBestDate = path.overallBestDate;
-        this._monthBestDate = path.monthBestDate;
+        this._name = path.name;
+        this._description = path.description;
+        this._distance = path.distance;
+        this._durationBest = path.durationBest;
+        this._trainingDateBest = path.trainingDateBest;
+        this._durationLatest = path.durationLatest;
+        this._trainingDateLatest = path.trainingDateLatest;
         this._latestToBestTimespan = path.latestToBestTimespan;
     }
 
@@ -46,52 +39,46 @@ export class TrackSummary implements TrackSummaryProps {
         return this._id;
     }
 
-    public get pathId() {
-        return this._pathId;
+    public get name() {
+        return this._name;
     }
 
-    public get pathName() {
-        return this._pathName;
+    public get description() {
+        return this._description;
     }
 
-    public get pathDistance() {
-        return this._pathDistance;
+    public get distance() {
+        return this._distance;
     }
 
-    public get overallAverage() {
-        return this._overallAverage;
+    public get durationBest() {
+        return this._durationBest;
     }
 
-    public get monthAverage() {
-        return this._monthAverage;
+    public get trainingDateBest() {
+        return this._trainingDateBest;
     }
 
-    public get overallBest() {
-        return this._overallBest;
+    public get durationLatest() {
+        return this._durationLatest;
     }
 
-    public get monthBest() {
-        return this._monthBest;
-    }
-
-    public get overallBestDate() {
-        return this._overallBestDate;
-    }
-
-    public get monthBestDate() {
-        return this._monthBestDate;
+    public get trainingDateLatest() {
+        return this._trainingDateLatest;
     }
 
     public get latestToBestTimespan() {
         return this._latestToBestTimespan;
     }
 
-
-    distanceInKms(): number {
-        return this._pathDistance / 1000;
+    public get bestTime(): TimeProps {
+        return {
+            duration: this._durationBest,
+            trainingDate: this._trainingDateBest,
+        }
     }
 
-    public get time(): TimeProps {
-        return {duration: this._overallBest, trainingDate: this._overallBestDate};
+    distanceInKms(): number {
+        return this.distance / 1000;
     }
 }
