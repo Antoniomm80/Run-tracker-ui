@@ -1,6 +1,6 @@
 {
     "name":"Runtracker",
     "short_name":"Runtracker",
-    "display": "standalone",
+    "display": "fullscreen",
     "start_url":"/"
 }
