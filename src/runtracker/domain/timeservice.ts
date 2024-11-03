@@ -22,7 +22,7 @@ const timeService = {
     async getMonthStats(month: number, year: number): Promise<PathStatsProps[]> {
         try {
             //add param to url
-            const result = await axios.get<PathStatsProps[]>(`${SERVER_URL}/run-tracker/api/v1/times/stats?month=${month}&year=${year}`);
+            const result = await axios.get<PathStatsProps[]>(`${SERVER_URL}/times/stats?month=${month}&year=${year}`);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
