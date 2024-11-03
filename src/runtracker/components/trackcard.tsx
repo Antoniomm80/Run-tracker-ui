@@ -1,4 +1,4 @@
-import {Badge, Button, createStyles, Group, Paper, Progress, rem, Space, Text, ThemeIcon} from "@mantine/core";
+import {Button, createStyles, Group, Paper, rem, Space, Text, ThemeIcon} from "@mantine/core";
 import {IconClock, IconRun} from "@tabler/icons-react";
 import {TimeProps} from "../domain/time";
 import {TrackProps} from "../domain/track";
@@ -70,20 +70,9 @@ export function TrackCard(props: TrackCardProps) {
                 {props.track.description}
             </Text>
 
-            <Group position="apart" mt="xs">
-                <Text fz="sm" color="dimmed">
-                    Progress
-                </Text>
-                <Text fz="sm" color="dimmed">
-                    62%
-                </Text>
-            </Group>
-
-            <Progress value={62} mt={5}/>
 
             <Group position="apart" mt="md">
                 <Text fz="sm">{buildBest()}</Text>
-                <Badge size="sm">4 days left</Badge>
                 <Button leftIcon={<IconClock/>} onClick={props.open}>
                     {translate("actions.add")}
                 </Button>
