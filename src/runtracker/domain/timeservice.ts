@@ -7,7 +7,11 @@ const timeService = {
 
     async createTime(pathId: string, time: TimeProps): Promise<TimeProps> {
         try {
-            const result = await axios.post<TimeProps>(`${SERVER_URL}/paths/${pathId}/times`, time);
+            const request = {
+                duration: time.duration,
+                trainingDate: time.trainingDate.toLocaleDateString("es-ES")
+            }
+            const result = await axios.post<TimeProps>(`${SERVER_URL}/paths/${pathId}/times`, request);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
