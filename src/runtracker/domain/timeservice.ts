@@ -7,7 +7,7 @@ const timeService = {
 
     async createTime(pathId: string, time: TimeProps): Promise<TimeProps> {
         try {
-            const result = await axios.post<TimeProps>(`${SERVER_URL}/run-tracker/api/v1/paths/${pathId}/times`, time);
+            const result = await axios.post<TimeProps>(`${SERVER_URL}/paths/${pathId}/times`, time);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
