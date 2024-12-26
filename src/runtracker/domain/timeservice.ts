@@ -9,7 +9,7 @@ const timeService = {
         try {
             const request = {
                 duration: time.duration,
-                trainingDate: time.trainingDate.toLocaleDateString("es-ES")
+                trainingDate: time.trainingDate.toISOString().split('T')[0]
             }
             const result = await axios.post<TimeProps>(`${SERVER_URL}/paths/${pathId}/times`, request);
             return result.data;
