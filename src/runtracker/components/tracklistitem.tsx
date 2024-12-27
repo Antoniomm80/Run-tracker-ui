@@ -5,6 +5,7 @@ import "./tracklist.css";
 import {IconArrowDownRight, IconArrowUpRight, IconCalendar, IconRun, IconTrophy} from "@tabler/icons-react";
 import {useRunTrackerStore} from "../../App";
 import {useNavigate} from "react-router-dom";
+import "./tracklistitem.css";
 
 interface TimeRefDecoratorProps {
     track: TrackSummary;
@@ -62,7 +63,7 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
 
     return (
         <Card withBorder key={track.id} mt={"xs"} onClick={handleOnClick}
-              sx={(theme) => ({backgroundColor: active ? theme.colors.blue[5] : ''})}>
+              sx={(theme) => ({backgroundColor: active ? theme.colors.blue[5] : ''})} className="track-card">
             <Grid gutter="0" justify="space-around">
                 <Grid.Col span={11}>
                     <Title order={active ? 5 : 6}>{track.name}</Title>
