@@ -1,9 +1,9 @@
 {
   "name": "Runtracker",
   "short_name": "Runtracker",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/runtracker-app",
-  "start_url": "/runtracker-app/",
+  "start_url": "/runtracker-app",
   "icons": [
     {
       "src": "icon-36x36.png",
