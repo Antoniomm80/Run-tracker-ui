@@ -42,7 +42,7 @@ export const TrackListItem: React.FC<TrackListItemProps> = ({track}) => {
     const theme = useMantineTheme();
     const selectedTrack = useRunTrackerStore((state) => state.selectedTrack);
     const navigate = useNavigate();
-    const handleOnClick = () => navigate('/tracks/' + track.id);
+    const handleOnClick = () => navigate(`/tracks/${track.id}`);
     const active = track.id === selectedTrack;
     const prepareDistanceText = (path: TrackSummary): string => {
         return ` ${path.distanceInKms()} kms`;
