@@ -1,7 +1,6 @@
-
 import axios, {AxiosError} from "axios";
-import { TrackSummaryProps } from "./tracksummary";
-import { TrackProps } from "./track";
+import {TrackSummaryProps} from "./tracksummary";
+import {TrackProps} from "./track";
 import {SERVER_URL} from "../../config";
 
 export const pathService = {
@@ -39,7 +38,13 @@ export const pathService = {
 
     async createPath(path: TrackProps): Promise<TrackProps> {
         try {
-            const result = await axios.post<TrackProps>(`${SERVER_URL}/paths`, path);
+            const request = {
+                name: path.name,
+                description: path.description,
+                distance: path.distance,
+                pathToMap: path.pathToMap
+            }
+            const result = await axios.post<TrackProps>(`${SERVER_URL}/paths`, request);
             return result.data;
         } catch (error) {
             const errors = error as Error | AxiosError;
