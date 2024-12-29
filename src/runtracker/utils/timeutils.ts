@@ -25,6 +25,9 @@ const timeUtils = {
     },
 
     formatDate(date: Date): string {
+        if (!date) {
+            return "";
+        }
         if (!date.getDate) {
             const dateChunks = date.toString().split('-');
             return `${dateChunks[2]}-${dateChunks[1]}-${dateChunks[0]}`;
