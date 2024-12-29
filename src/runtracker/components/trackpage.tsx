@@ -174,7 +174,7 @@ export function TrackPage(props: TrackPageProps) {
                         icon={<IconClock size="0.8rem"/>}
                         {...register("durationString", {
                             required: true,
-                            pattern: /^[0-5]?\d:[0-5]\d$/i,
+                            pattern: /^[0-9]?\d:[0-5]\d$/i,
                             onBlur: handleChange,
                         })}
                         aria-invalid={errors.durationString ? "true" : "false"}
